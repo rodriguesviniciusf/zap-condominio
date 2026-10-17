@@ -1,58 +1,38 @@
-[app]
+name: Compilar APK Android
 
-# (str) Title of your application
-title = Zap do Condominio
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
 
-# (str) Package name
-package.name = zapcondominio
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-# (str) Package domain (needed for android/ios packaging)
-package.domain = org.zap
+    steps:
+    - uses: actions/checkout@v4
 
-# (str) Source code where the main.py live
-source.dir = .
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
 
-# (list) Source files to include (let empty to include all the files)
-source.include_exts = py,png,jpg,kv,atlas,json
+    - name: Install Buildozer dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo6 cmake libffi-dev libssl-dev lld clang
 
-# (str) Application versioning (method 1)
-version = 0.1
+    - name: Install Buildozer and pinned Cython
+      run: |
+        pip install --upgrade pip
+        pip install "cython<3.0.0" buildozer kivy
 
-# (list) Application requirements
-# comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy
+    - name: Build APK with Buildozer
+      run: |
+        buildozer -v android debug
 
-# (list) Garden requirements
-#garden_requirements =
-
-# (str) Presumed orientation ("portrait", "landscape" or "all")
-orientation = portrait
-
-# (bool) Indicate if the application should be fullscreen or not
-fullscreen = 0
-
-# (list) Permissions
-#android.permissions = INTERNET
-
-# (int) Target Android API, should be as high as possible.
-android.api = 33
-
-# (int) Minimum API required
-android.minapi = 21
-
-# (int) Android NDK version to use
-android.ndk = 25b
-
-# (bool) If True, then skip try to update the android sdk information
-android.accept_sdk_license = True
-
-# (str) The Android arch to build for, choices: armeabi-v7a, arm64-v8a, x86, x86_64
-android.archs = arm64-v8a
-
-[buildozer]
-
-# (int) Log level (0 = error only, 1 = info, 2 = debug (with command output))
-log_level = 2
-
-# (int) Display warning if buildozer is run as root (0 =  false, 1 = true)
-warn_on_root = 1
+    - name: Upload APK Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ZapCondominio-APK
+        path: bin/*.apk
