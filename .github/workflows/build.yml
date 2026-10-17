@@ -27,6 +27,10 @@ jobs:
         pip install --upgrade pip
         pip install "cython<3.0.0" buildozer kivy
 
+    - name: Clean previous builds to avoid conflicts
+      run: |
+        buildozer clean || true
+
     - name: Build APK with Buildozer
       run: |
         buildozer -v android debug
