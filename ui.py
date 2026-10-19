@@ -1,6 +1,9 @@
 """Componentes vetoriais do jogo, sem dependências de tema externas."""
 from kivy.animation import Animation
-from kivy.graphics import Color, RoundedRectangle, Rectangle, Line, Ellipse
+from kivy.graphics import Color, RoundedRectangle, Rectangle, Line, Ellipse, StencilPush, StencilUse, StencilUnUse, StencilPop
+from kivy.core.image import Image as CoreImage
+from pathlib import Path
+from lore import PERFIS, CONSELHEIROS
 from kivy.metrics import dp, sp
 from kivy.properties import ListProperty, NumericProperty
 from kivy.uix.behaviors import ButtonBehavior
@@ -8,15 +11,15 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.widget import Widget
 
-BG = (0.035, 0.063, 0.106, 1)
-PANEL = (0.072, 0.115, 0.173, 1)
-PANEL2 = (0.095, 0.148, 0.210, 1)
-EDGE = (0.16, 0.22, 0.29, 1)
-INK = (0.95, 0.95, 0.91, 1)
-MUTED = (0.57, 0.65, 0.73, 1)
-MINT = (0.46, 0.89, 0.71, 1)
-AMBER = (0.97, 0.73, 0.40, 1)
-CORAL = (1.0, 0.51, 0.46, 1)
+BG = (.955, .946, .908, 1)
+PANEL = (.998, .993, .972, 1)
+PANEL2 = (.89, .95, .90, 1)
+EDGE = (.77, .83, .78, 1)
+INK = (.09, .19, .19, 1)
+MUTED = (.36, .46, .43, 1)
+MINT = (.08, .48, .35, 1)
+AMBER = (.76, .40, .09, 1)
+CORAL = (.80, .24, .20, 1)
 
 
 class Text(Label):
@@ -153,7 +156,104 @@ def row(height=38, spacing=8):
 def button(title, action, primary=False, accent=MINT, font=14):
     card = TapCard(action=action, adaptive=False, size_hint_y=None, height=dp(50), bg=accent if primary else PANEL,
                    stroke=accent if primary else EDGE, padding=(dp(15), dp(10)), radius=14)
-    label = Label(text=title, color=BG if primary else INK, bold=True, font_size=sp(font))
+    label = Label(text=title, color=(1, 1, .96, 1) if primary else INK, bold=True, font_size=sp(font))
     label.bind(size=lambda w, s: setattr(w, 'text_size', (s[0], s[1])))
     card.add_widget(label)
     return card
+
+_TEXTURES = {}
+
+
+def texture(name):
+    if name not in _TEXTURES:
+        _TEXTURES[name] = CoreImage(str(Path(__file__).parent/'assets'/name)).texture
+    return _TEXTURES[name]
+
+
+class Portrait(Widget):
+    def __init__(self, name='', diameter=48, index=None, **kwargs):
+        super().__init__(size_hint=(None, None), size=(dp(diameter), dp(diameter)), **kwargs)
+        info = PERFIS.get(name, CONSELHEIROS.get(name, dict(retrato=11)))
+        tile = info['retrato'] if index is None else index
+        source = texture('elenco.jpg')
+        w, h = source.width//3, source.height//4
+        side = min(w, h)
+        self.face = source.get_region((tile % 3)*w+(w-side)//2, (3-tile//3)*h, side, side)
+        self.bind(pos=self._draw, size=self._draw)
+        self._draw()
+
+    def _draw(self, *_):
+        self.canvas.clear()
+        with self.canvas:
+            Color(.1, .2, .15, .12)
+            Ellipse(pos=(self.x, self.y-dp(2)), size=self.size)
+            StencilPush()
+            Ellipse(pos=self.pos, size=self.size)
+            StencilUse()
+            Color(1, 1, 1, 1)
+            Rectangle(pos=self.pos, size=self.size, texture=self.face)
+            StencilUnUse()
+            Ellipse(pos=self.pos, size=self.size)
+            StencilPop()
+            Color(*EDGE)
+            Line(circle=(self.center_x, self.center_y, self.width/2), width=dp(1))
+
+
+class Cover(Widget):
+    def __init__(self, radius=20, **kwargs):
+        super().__init__(**kwargs)
+        self.radius = dp(radius)
+        self.bind(pos=self._draw, size=self._draw)
+
+    def _draw(self, *_):
+        if self.width < 1 or self.height < 1:
+            return
+        source = texture('capa.jpg')
+        target = self.width/self.height
+        if source.width/source.height > target:
+            crop_h, crop_w = source.height, int(source.height*target)
+        else:
+            crop_w, crop_h = source.width, int(source.width/target)
+        crop_w, crop_h = max(1, crop_w), max(1, crop_h)
+        region = source.get_region((source.width-crop_w)//2, (source.height-crop_h)//2, crop_w, crop_h)
+        self.canvas.clear()
+        with self.canvas:
+            StencilPush()
+            RoundedRectangle(pos=self.pos, size=self.size, radius=[self.radius])
+            StencilUse()
+            Color(1, 1, 1, 1)
+            Rectangle(pos=self.pos, size=self.size, texture=region)
+            StencilUnUse()
+            RoundedRectangle(pos=self.pos, size=self.size, radius=[self.radius])
+            StencilPop()
+
+
+class Icon(Widget):
+    def __init__(self, kind='chat', accent=MINT, **kwargs):
+        super().__init__(size_hint=(None, None), size=(dp(22), dp(22)), **kwargs)
+        self.kind, self.accent = kind, accent
+        self.bind(pos=self._draw, size=self._draw)
+
+    def _draw(self, *_):
+        x, y, s = self.x, self.y, self.width
+        self.canvas.clear()
+        with self.canvas:
+            Color(*self.accent)
+            if self.kind == 'building':
+                Line(rectangle=(x+s*.16, y+s*.1, s*.68, s*.8), width=dp(1.3))
+                for a in (.32, .6):
+                    for b in (.32, .57, .77):
+                        Rectangle(pos=(x+s*a, y+s*b), size=(s*.09, s*.07))
+            elif self.kind == 'people':
+                for a in (.28, .72):
+                    Line(circle=(x+s*a, y+s*.7, s*.12), width=dp(1.2))
+                    Line(points=[x+s*(a-.19), y+s*.18, x+s*(a-.14), y+s*.4,
+                                 x+s*(a+.14), y+s*.4, x+s*(a+.19), y+s*.18], width=dp(1.2))
+            elif self.kind == 'board':
+                Line(rounded_rectangle=(x+s*.2, y+s*.08, s*.6, s*.78, dp(2)), width=dp(1.2))
+                for a in (.3, .5, .7):
+                    Line(points=[x+s*.34, y+s*a, x+s*.66, y+s*a], width=dp(1.2))
+            else:
+                Line(rounded_rectangle=(x+s*.1, y+s*.28, s*.8, s*.61, dp(4)), width=dp(1.3))
+                Line(points=[x+s*.2, y+s*.28, x+s*.2, y+s*.08, x+s*.43, y+s*.28], width=dp(1.3))
+

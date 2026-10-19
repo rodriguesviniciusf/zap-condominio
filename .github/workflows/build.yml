@@ -44,6 +44,7 @@ jobs:
           path: screenshots/*.png
           if-no-files-found: ignore
   build:
+    needs: interface
     # libffi da toolchain usa macros removidas do libtool mais recente.
     runs-on: ubuntu-22.04
     timeout-minutes: 60
@@ -58,7 +59,7 @@ jobs:
           java-version: '17'
       - name: Validar regras e conteúdo
         run: |
-          python -m compileall -q main.py game.py ui.py
+          python -m compileall -q main.py game.py ui.py lore.py
           python -m unittest discover -s tests -v
       - name: Instalar dependências Linux
         run: |

@@ -1,35 +1,48 @@
-# Zap do Condomínio
+# Zap do Condomínio — 0.4
 
-Simulador cômico de gestão para Android: sobreviva a 365 dias sem zerar a paciência ou deixar o caixa negativo.
+Simulador cômico de gestão para Android. Sobreviva a 365 dias sem falir, esgotar a paciência ou ser destituído pelos moradores.
 
-## Jogar
+## Mandatos aleatórios
 
-No Chat, escolha conversar, debochar, multar ou ouvir um dos três Conselheiros do Caos. A resposta encerra o chamado; o botão Encerrar o dia avança o calendário. Adiar deixa uma pendência, que pode ser resolvida na aba Chamados. Cada chamado aberto custa um ponto diário de paciência e aprovação, até 12 pontos por dia.
+O banco contém 365 histórias e 1.460 respostas de base. Cada dia sorteia uma história ainda não usada dentro do tema do mês. Não há uma sequência fixa de abertura. Novo mandato evita repetir o primeiro problema do mandato anterior; Continuar mantém exatamente a ocorrência e o estado do sorteio salvos.
 
-Os conselhos têm consequências financeiras e sociais três dias depois. Câmeras custam R$ 1.500 e reduzem pela metade o custo imediato das decisões de segurança. A cada 30 dias há receita de taxas, inadimplência ligada à aprovação e despesas fixas. O mandato é salvo automaticamente no armazenamento privado do aplicativo.
+O calendário fictício vai de janeiro a dezembro. As situações estão em eventos.json, com fonte editorial em calendar_content.py e gerador build_events.py. Os arquivos editoriais não entram no APK.
 
-## Compilar e baixar
+## Moradores e assembleias
 
-O Actions compila em pushes e pull requests. Abra a execução concluída e baixe o artefato **ZapCondominio-APK**; extraia o ZIP para instalar o APK de teste em um Android arm64 (Android 5 ou superior). O artefato **build-log** contém o diagnóstico da compilação.
+Oito moradores têm confiança, irritação e memória da última interação. Conversas e melhorias ajudam; deboche, multas e conselhos ruins desgastam as relações. Esses indicadores entram no voto real de cada morador.
 
-A toolchain está fixada em Ubuntu 22.04, Buildozer 1.5.0, python-for-android v2024.01.21, Cython 0.29.36, Java 17 e NDK 25b. A falha anterior acontecia no autogen da libffi com a macro LT_SYS_SYMBOL_USCORE no runner ubuntu-latest. Este é um APK debug para testes; publicação na Play Store precisa de revisão da API alvo, assinatura de release e requisitos vigentes.
+Há assembleias a cada 30 dias. Três dias encerrados com aprovação abaixo de 20% convocam uma assembleia de crise. São necessários cinco votos entre oito moradores para aprovar uma proposta. Se uma proposta for rejeitada na assembleia de crise, o mandato acaba por destituição. A interface mostra o apoio calculado para cada plano e os votos individuais após a decisão.
 
-## Desenvolvimento
+Uma conversa de reconciliação por dia custa R$ 120, recupera confiança e reduz irritação. O limite diário fica salvo.
 
-Use Python 3.10 e `pip install kivy==2.3.0`; execute `python main.py`. As regras podem ser verificadas sem Kivy: `python -m unittest discover -s tests -v`.
+## Melhorias e gestão pessoal
 
-## Versão 0.3 — um ano de histórias
+- Câmeras HD: R$ 1.500, sem mensalidade; metade dos custos imediatos em segurança e consulta às gravações.
+- Portaria remota: R$ 2.400 + R$ 350/mês; solução extra para acessos e delegação mais barata.
+- Plano preventivo: R$ 1.800 + R$ 200/mês; reparos mais baratos, menos desgaste e solução técnica extra.
+- Reservas digitais: R$ 900 + R$ 80/mês; organização dos espaços e solução pela agenda.
 
-O calendário fictício vai de janeiro a dezembro, com 365 eventos próprios, 1.460 escolhas e temas mensais. Cada dia abre sua ocorrência; não há sorteio de histórias repetidas. Cada situação oferece diplomacia, deboche, cobrança e um palpite de um dos três conselheiros. Os efeitos futuros continuam chegando após três dias.
+As melhorias acrescentam opções utilizáveis aos eventos das categorias atendidas.
 
-`calendar_content.py` contém as 353 novas situações escritas em formato editorial. `build_events.py` preserva os 12 primeiros eventos e materializa o banco completo com `python build_events.py`. Esses dois arquivos ficam fora do APK; o aplicativo lê `eventos.json` diretamente.
+Descansar custa R$ 180 e recupera 14 pontos de paciência, com perda de dois pontos de aprovação. Delegar resolve um chamado comum por R$ 240, ou R$ 160 com portaria remota. Cada ação pode ser usada uma vez por dia; crises de conselheiros exigem decisão própria e não podem ser delegadas.
 
-O visual usa cartões de conversa, ilustração vetorial, avatares por iniciais, indicadores de paciência e aprovação e uma tela de início. As abas Chat, Chamados e Gestão mostram as decisões, a fila de pendências e o livro de ocorrências. O progresso fica salvo no aparelho; reiniciar exige confirmação no próprio jogo.
+## Conselheiros e crises
 
-Saves da versão anterior mantêm o caixa, os indicadores, as consequências e os chamados antigos. Se o chamado de hoje ainda não foi respondido, ele passa a usar o roteiro do dia correto.
+Um conselho seguido pode abrir uma crise três dias depois. O jogador escolhe entre reparo definitivo, negociação e uma segunda gambiarra. Esta última abre uma segunda e última etapa em dois dias. Ignorar o prazo causa reparo emergencial mais caro, perda de paciência e aprovação.
 
-## Verificação visual
+Saves antigos mantêm os efeitos financeiros já contratados, enquanto novas escolhas usam as crises interativas.
 
-O job `interface` do Actions abre as telas reais do Kivy em 390×844 e 360×640, percorre respostas, pendências, compra de câmeras, fim de mandato e diálogo de reinício. As capturas ficam no artefato `telas-do-jogo`. Esse teste de desktop não substitui a instalação no aparelho Android.
+## Visual e progresso
 
-As ideias para a próxima etapa estão em [IDEIAS.md](IDEIAS.md).
+O jogo usa arte própria de condomínio e um elenco de 12 retratos ilustrados, interface clara com tons de papel e verde, balões, indicadores e quatro áreas: Grupo, Pautas, Gente e Prédio. As imagens estão em assets/capa.jpg e assets/elenco.jpg.
+
+O progresso é salvo no armazenamento privado do aplicativo. Saves da versão 0.3 são migrados preservando indicadores, melhorias existentes, chamados e consequências. O novo formato também salva relações, votações, ações diárias e estado do gerador aleatório. Novo mandato pede confirmação dentro do jogo.
+
+## Compilar, baixar e verificar
+
+O GitHub Actions testa regras e conteúdo, abre as telas reais em 390×844 e 360×640 e compila um APK debug arm64. As capturas ficam em telas-do-jogo e o APK em ZapCondominio-APK. Baixe o ZIP do artefato e extraia o APK.
+
+A toolchain usa Ubuntu 22.04, Python 3.10, Buildozer 1.5.0, python-for-android v2024.01.21, Cython 0.29.36, Java 17, NDK 25b e API 33. Publicação em loja exige uma etapa própria de assinatura de release e revisão da API alvo.
+
+Para desenvolvimento: instale kivy==2.3.0, execute python main.py e use python -m unittest discover -s tests -v para testar as regras sem Kivy. O teste tests/smoke_ui.py usa Pillow e Xvfb no Linux. Instalação e interação no Android ainda precisam ser testadas no aparelho.
