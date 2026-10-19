@@ -1,3 +1,9 @@
+# Atualização 0.5
+
+Implementados: investigação com pistas, boatos e retratação; três panelinhas com efeito em votação; tutorial; quatro sons próprios; vibração opcional; três tamanhos de leitura; transição de dia opcional; novo ícone.
+
+Próximas expansões: mais casos investigáveis com histórias inéditas, rival eleitoral, prestadores com reputação, eventos positivos e arcos de moradores com finais alternativos.
+
 # Evolução do jogo
 
 A versão 0.4 implementa sorteio sem repetição, moradores com memória e votos, assembleias de crise, melhorias com novas respostas, crises de duas etapas, descanso e delegação.

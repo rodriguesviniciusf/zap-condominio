@@ -22,10 +22,17 @@ AMBER = (.76, .40, .09, 1)
 CORAL = (.80, .24, .20, 1)
 
 
+TEXT_SCALE = 1.0
+
+def set_text_scale(value):
+    global TEXT_SCALE
+    TEXT_SCALE = value
+
+
 class Text(Label):
     def __init__(self, text='', size=14, color=INK, bold=False, **kwargs):
         kwargs.setdefault('size_hint_y', None)
-        super().__init__(text=text, font_size=sp(size), color=color, bold=bold, halign='left', valign='middle', **kwargs)
+        super().__init__(text=text, font_size=sp(size * TEXT_SCALE if size >= 12 else size), color=color, bold=bold, halign='left', valign='middle', **kwargs)
         self.bind(width=self._wrap, texture_size=self._fit)
         self._wrap()
 
@@ -158,8 +165,13 @@ def row(height=38, spacing=8):
 def button(title, action, primary=False, accent=MINT, font=14):
     card = TapCard(action=action, adaptive=False, size_hint_y=None, height=dp(50), bg=accent if primary else PANEL,
                    stroke=accent if primary else EDGE, padding=(dp(15), dp(10)), radius=14)
-    label = Label(text=title, color=(1, 1, .96, 1) if primary else INK, bold=True, font_size=sp(font))
-    label.bind(size=lambda w, s: setattr(w, 'text_size', (s[0], s[1])))
+    if font >= 12:
+        label = Text(title, size=font, color=(1, 1, .96, 1) if primary else INK, bold=True)
+        label.halign = 'center'
+        label.bind(height=lambda w, h: setattr(card, 'height', max(dp(50), h+dp(20))))
+    else:
+        label = Label(text=title, color=(1, 1, .96, 1) if primary else INK, bold=True, font_size=sp(font))
+        label.bind(size=lambda w, s: setattr(w, 'text_size', (s[0], s[1])))
     card.add_widget(label)
     return card
 

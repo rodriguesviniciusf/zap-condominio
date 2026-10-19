@@ -33,9 +33,12 @@ jobs:
           KIVY_METRICS_DENSITY: '1'
           KIVY_METRICS_FONTSCALE: '1'
           LIBGL_ALWAYS_SOFTWARE: '1'
+          SDL_AUDIODRIVER: dummy
         run: |
           xvfb-run -a python tests/smoke_ui.py
+          xvfb-run -a python tests/smoke_features.py
           ZAP_WIDTH=360 ZAP_HEIGHT=640 xvfb-run -a python tests/smoke_ui.py
+          ZAP_WIDTH=360 ZAP_HEIGHT=640 xvfb-run -a python tests/smoke_features.py
       - name: Capturas das telas reais
         if: always()
         uses: actions/upload-artifact@v4
@@ -57,9 +60,14 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
+      - name: Reutilizar chave de desenvolvimento entre builds
+        uses: actions/cache@v4
+        with:
+          path: ~/.android/debug.keystore
+          key: android-debug-keystore-v1-${{ github.repository_id }}
       - name: Validar regras e conteúdo
         run: |
-          python -m compileall -q main.py game.py ui.py lore.py
+          python -m compileall -q main.py game.py ui.py lore.py community.py preferences.py experience.py
           python -m unittest discover -s tests -v
       - name: Instalar dependências Linux
         run: |

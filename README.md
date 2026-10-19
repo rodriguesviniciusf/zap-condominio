@@ -1,4 +1,19 @@
-# Zap do Condomínio — 0.4
+# Zap do Condomínio · 0.5.0
+
+Simulador de gestão de 365 dias para Android, feito em Python/Kivy.
+
+## Novidades desta versão
+
+- **Investigações:** seis casos especiais roteirizados de segurança, garagem, entregas, barulho e lixo. Surgem aleatoriamente em chamados compatíveis, sem repetir no mandato. Fontes consultadas custam R$ 60 e 2 de paciência; a primeira custa R$ 20 com câmeras. Duas fontes verificadas e conclusão correta rendem +8 de apoio e +4 de paciência. Boato não conta. Acusação incorreta ou sem provas exige retratação de R$ 200, -10 de apoio e -6 de paciência. Arquivar sem acusar custa apenas 2 de paciência. Escolher uma resposta comum encerra a investigação; cobrança sem apuração também exige retratação.
+- **Panelinhas:** Liga do Sossego, Turma da Resenha e Fiscalizadores do Pix. Cada resposta altera apoios visíveis. O apoio do grupo influencia a nota de voto dos integrantes em até 6 pontos, junto com confiança e irritação pessoais. Mediação uma vez por dia: R$ 100 e 3 de paciência; +12 para o grupo ouvido e -2 para os outros.
+- **Tutorial:** quatro passos na primeira entrada, com opção de pular e rever pelo menu.
+- **Preferências:** sons originais curtos, vibração opcional (começa desligada), texto padrão/grande/muito grande e transição entre dias desativável. Preferências salvas separadamente do mandato.
+- **Novo ícone original:** prédio e balão de conversa, integrado ao lançador Android e à marca interna.
+- Saves da versão 0.4 continuam no mesmo dia, com as mesmas decisões e o mesmo gerador aleatório; novos apoios começam neutros. Saves anteriores também são migrados.
+
+Os quatro sinais sonoros são síntese original em PCM mono, sem samples de terceiros. O ícone foi gerado para o projeto. Vibração depende do hardware e das configurações do Android; falhas de suporte não impedem jogar. O áudio pode ser desligado.
+
+## Recursos anteriores
 
 Simulador cômico de gestão para Android. Sobreviva a 365 dias sem falir, esgotar a paciência ou ser destituído pelos moradores.
 

@@ -8,9 +8,13 @@ from kivy.metrics import dp
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
+from kivy.uix.image import Image
 from kivy.uix.popup import Popup
 from kivy.uix.scrollview import ScrollView
 from game import SindicoGame
+from preferences import Preferencias
+from experience import ExperienceMixin
+from ui import set_text_scale
 from lore import PERFIS, CONSELHEIROS, MELHORIAS, MESES, calendario
 from ui import BG, PANEL, PANEL2, EDGE, INK, MUTED, MINT, AMBER, CORAL
 from ui import Card, Cover, Icon, Meter, Portrait, TapCard, Text, button, row, stack
@@ -26,13 +30,17 @@ def money(value):
     return f'{value:,.0f}'.replace(',', '.')
 
 
-class ZapCondominioApp(App):
+class ZapCondominioApp(ExperienceMixin, App):
     def build(self):
         self.title = 'Zap do Condomínio'
+        self.icon = str(Path(__file__).parent/'assets'/'icone.png')
         Window.clearcolor = BG
         seed = os.environ.get('ZAP_QA_SEED')
         self.game = SindicoGame(seed=int(seed) if seed else None)
         self.save_path = Path(os.environ.get('ZAP_SAVE_DIR', self.user_data_dir))/'mandato.json'
+        self.preferencias = Preferencias(self.save_path.with_name('preferencias.json'))
+        set_text_scale(self.preferencias.valores['texto'])
+        self.preferencias.preparar()
         self.aviso = ''
         self.tem_save = self.save_path.exists()
         if self.tem_save:
@@ -75,7 +83,7 @@ class ZapCondominioApp(App):
         header = row(42)
         mark = Card(adaptive=False, bg=MINT, stroke=MINT, radius=12,
                     size_hint_x=None, width=dp(40), padding=0)
-        mark.add_widget(Label(text='Z', bold=True, font_size='27sp', color=(1, 1, .96, 1)))
+        mark.add_widget(Image(source=self.icon))
         header.add_widget(mark)
         header.add_widget(Text('ZAP DO\nCONDOMÍNIO', size=15, bold=True))
         if pause:
@@ -98,6 +106,7 @@ class ZapCondominioApp(App):
     def render_menu(self):
         self.brand()
         self.scroll_area()
+        self.content.add_widget(button('Preferências e ajuda', self.ajustes))
         self.content.add_widget(Text('UM GRUPO. OITO VIZINHOS. ZERO SOSSEGO.', size=10, color=MINT, bold=True))
         self.content.add_widget(Cover(size_hint_y=None, height=dp(235)))
         self.content.add_widget(Text('Seu mandato.\nO caos de todos.', size=33, bold=True))
@@ -247,6 +256,8 @@ class ZapCondominioApp(App):
         self.content.add_widget(card)
 
     def choices(self, event):
+        if self.game.caso_aberto(event):
+            self.investigation_card(event)
         self.content.add_widget(Text('ESCOLHA SUA RESPOSTA', size=10, color=MUTED, bold=True))
         for index, option in enumerate(self.game.opcoes_evento(event)):
             kind = option.get('tipo', ('passiva', 'debochada', 'multa', 'conselho')[min(index, 3)])
@@ -265,6 +276,8 @@ class ZapCondominioApp(App):
             card.add_widget(Text(message, size=14))
             impact = self.game.impacto_opcao(event, option)
             card.add_widget(Text(f"R$ {impact['caixa']:+.0f}  /  paciência {impact['paciencia']:+d}  /  apoio {impact['aprovacao']:+d}", size=10, color=MUTED))
+            effects = self.game.efeito_panelinhas(kind)
+            card.add_widget(Text('Grupos: Sossego {:+d} / Resenha {:+d} / Pix {:+d}'.format(effects['sossego'], effects['resenha'], effects['planilha']), size=10, color=MUTED))
             if chaos:
                 card.add_widget(Text('Pode abrir outra crise nos próximos dias.', size=10, color=AMBER))
             self.content.add_widget(card)
@@ -274,7 +287,7 @@ class ZapCondominioApp(App):
         crisis = g.assembleia['tipo'] == 'crise'
         self.section('MANDATO EM JOGO' if crisis else 'ASSEMBLEIA DO MÊS', g.assembleia['titulo'],
                      'A maioria precisa apoiar um plano. Rejeição na crise encerra o mandato.' if crisis else
-                     'A confiança e a irritação dos moradores decidem o voto. Maioria: 5 de 8.')
+                     'Confiança, irritação e apoio das panelinhas decidem o voto. Maioria: 5 de 8.')
         crowd = Card(orientation='horizontal', adaptive=False, height=dp(51), padding=dp(8), spacing=dp(5))
         for name in PERFIS:
             crowd.add_widget(Portrait(name, diameter=29))
@@ -329,6 +342,7 @@ class ZapCondominioApp(App):
         self.section('QUEM MORA AO LADO', 'Cada vizinho tem memória.',
                      'Confiança ajuda nas votações. Deboche e multas acumulam irritação. Uma conversa de mediação por dia.')
         self.notice()
+        self.groups_cards()
         for name, profile in PERFIS.items():
             state = self.game.moradores[name]
             card = Card(spacing=dp(8))
@@ -397,6 +411,8 @@ class ZapCondominioApp(App):
         self.no_menu = False
         self.salvar()
         self.render()
+        if not self.preferencias.valores['tutorial'] and not os.environ.get('ZAP_QA_SEED'):
+            self.tutorial()
 
     def menu(self):
         self.no_menu = True
@@ -413,6 +429,7 @@ class ZapCondominioApp(App):
 
     def acao(self, callback):
         self.aviso = callback()
+        self.preferencias.tocar('alerta' if not self.game.jogo_ativo else 'decisao', haptico=True)
         self.salvar()
         self.render()
 
@@ -421,8 +438,7 @@ class ZapCondominioApp(App):
         self.acao(lambda: self.game.responder_evento(evento, indice))
 
     def avancar(self):
-        self.aba, self.ticket_selecionado = 'chat', None
-        self.acao(self.game.avancar_dia)
+        self.transicao_dia()
 
     def comprar(self, key='cameras'):
         self.aviso = (MELHORIAS[key]['nome']+' instalado.') if self.game.comprar_melhoria(key) else 'Melhoria já instalada ou caixa insuficiente.'
@@ -439,8 +455,7 @@ class ZapCondominioApp(App):
             first = self.game.vistos[0] if self.game.vistos else self.game.evento_atual['id']
             self.game = SindicoGame(evitar_inicio=first)
             self.aba, self.aviso, self.ticket_selecionado, self.no_menu = 'chat', '', None, False
-            self.salvar()
-            self.render()
+            self.iniciar()
         box.add_widget(button('Novo mandato aleatório', reiniciar, primary=True))
         box.add_widget(button('Manter minha partida', popup.dismiss))
         popup.open()

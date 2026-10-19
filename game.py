@@ -5,6 +5,7 @@ import random
 import secrets
 from pathlib import Path
 from lore import PERFIS, MELHORIAS, PROPOSTAS, calendario
+from community import ComunidadeMixin, PANELINHAS, CASOS
 
 CAMPOS = ('dia', 'caixa', 'paciencia', 'aprovacao', 'pendencias', 'consequencias',
           'historico', 'jogo_ativo', 'vitoria', 'encerrado', 'evento_atual',
@@ -22,7 +23,7 @@ def tuplas(valor):
     return tuple(tuplas(v) for v in valor) if isinstance(valor, list) else valor
 
 
-class SindicoGame:
+class SindicoGame(ComunidadeMixin):
     def __init__(self, seed=None, evitar_inicio=None):
         self.semente = seed if seed is not None else secrets.randbits(64)
         self.rng = random.Random(self.semente)
@@ -40,6 +41,7 @@ class SindicoGame:
         self.todos_eventos = json.loads(Path(__file__).with_name('eventos.json').read_text(encoding='utf-8'))
         if not self.todos_eventos:
             raise ValueError('O banco de eventos está vazio.')
+        self.iniciar_comunidade()
         self.evento_atual = self._sortear_evento(evitar_inicio)
 
     @property
@@ -83,7 +85,7 @@ class SindicoGame:
         evento['dia_roteiro'] = evento['dia']
         evento.update(dia=self.dia, mes=mes, dia_mes=dia_mes, abertura=self.dia,
                       ticket=f"{self.dia}-{evento['id']}", tipo_evento='normal')
-        return evento
+        return self.preparar_caso(evento)
 
     def verificar_status_jogo(self):
         self.paciencia, self.aprovacao = limite(self.paciencia), limite(self.aprovacao)
@@ -131,6 +133,8 @@ class SindicoGame:
         morador = self.moradores.get(evento['remetente'])
         if morador and morador['irritacao'] >= 40 and tipo in ('debochada', 'multa', 'conselho'):
             aprovacao -= 2
+        if evento.get('investigacao') and tipo == 'multa':
+            caixa, paciencia, aprovacao = -200, -6, -10
         return dict(caixa=caixa, paciencia=paciencia, aprovacao=aprovacao)
 
     def _memoria(self, evento, tipo):
@@ -169,6 +173,7 @@ class SindicoGame:
         tipo = opcao.get('tipo', ['passiva', 'debochada', 'multa', 'conselho'][min(indice_opcao, 3)])
         self.escolhas[tipo] = self.escolhas.get(tipo, 0)+1
         self._memoria(evento, tipo)
+        self.atualizar_panelinhas(tipo)
         if opcao.get('consequencia'):
             fonte = dict(titulo=evento.get('titulo', 'O conselho do grupo'), remetente=evento['remetente'],
                          categoria=evento['categoria'], conselheiro=evento.get('conselheiro', 'Toninho'),
@@ -283,8 +288,9 @@ class SindicoGame:
         votos = []
         for nome, estado in self.moradores.items():
             nota = estado['confianca']*.6+self.aprovacao*.4+proposta['apoio']-estado['irritacao']*.12
+            nota += self.bonus_panelinha(nome)
             sim = nota >= 50+PERFIS[nome]['rigor']
-            votos.append(dict(nome=nome, sim=sim, motivo='Confia no plano apresentado.' if sim else 'Confiança insuficiente ou irritação acumulada.'))
+            votos.append(dict(nome=nome, sim=sim, motivo='Confiança pessoal e apoio do grupo sustentam o plano.' if sim else 'Confiança, irritação ou oposição do grupo pesaram contra.'))
         return votos
 
     def votar(self, indice):
@@ -365,6 +371,7 @@ class SindicoGame:
         self.paciencia += 4
         self.aprovacao += 2
         self._memoria(evento, 'delegacao')
+        self.atualizar_panelinhas('delegacao')
         self.escolhas['delegacao'] += 1
         if atual:
             self.encerrado = True
@@ -396,7 +403,8 @@ class SindicoGame:
 
     def salvar(self, caminho):
         estado = {k: copy.deepcopy(getattr(self, k)) for k in CAMPOS}
-        estado.update(versao_save=2, rng_state=self.rng.getstate())
+        estado.update(versao_save=2, rng_state=self.rng.getstate(),
+                      comunidade=dict(panelinhas=self.panelinhas, mediacao_dia=self.mediacao_dia, casos_resolvidos=self.casos_resolvidos, casos_vistos=self.casos_vistos))
         destino = Path(caminho)
         destino.parent.mkdir(parents=True, exist_ok=True)
         temporario = destino.with_suffix('.tmp')
@@ -428,6 +436,22 @@ class SindicoGame:
             novo.fim_motivo = 'vitoria' if novo.vitoria else ('paciencia' if novo.paciencia <= 0 else 'caixa' if novo.caixa < 0 else '')
         else:
             raise ValueError('Versão de save desconhecida.')
+        comunidade = estado.get('comunidade', {})
+        if not isinstance(comunidade, dict):
+            raise ValueError('Estado da comunidade inválido.')
+        grupos = comunidade.get('panelinhas', novo.panelinhas)
+        if not isinstance(grupos, dict) or set(grupos) != set(PANELINHAS) or not all(isinstance(v, (int, float)) and 0 <= v <= 100 for v in grupos.values()):
+            raise ValueError('Estado das panelinhas inválido.')
+        novo.panelinhas = copy.deepcopy(grupos)
+        vistos = comunidade.get('casos_vistos', [])
+        if not isinstance(vistos, list) or not all(isinstance(v, str) for v in vistos) or len(vistos) != len(set(vistos)) or not set(vistos) <= {c['id'] for c in CASOS}:
+            raise ValueError('Histórico de casos inválido.')
+        novo.casos_vistos = list(vistos)
+        for chave in ('mediacao_dia', 'casos_resolvidos'):
+            valor = comunidade.get(chave, 0)
+            if not isinstance(valor, int) or valor < 0:
+                raise ValueError('Estado da comunidade inválido.')
+            setattr(novo, chave, valor)
         ids = {e['id'] for e in novo.todos_eventos}
         if not isinstance(novo.vistos, list) or len(novo.vistos) != len(set(novo.vistos)) or not set(novo.vistos) <= ids:
             raise ValueError('Histórico de sorteio inválido.')
@@ -443,4 +467,8 @@ class SindicoGame:
                 raise ValueError('Memória inválida.')
         for campo in CAMPOS:
             setattr(self, campo, getattr(novo, campo))
+        self.panelinhas = novo.panelinhas
+        self.mediacao_dia = novo.mediacao_dia
+        self.casos_resolvidos = novo.casos_resolvidos
+        self.casos_vistos = novo.casos_vistos
         self.rng = novo.rng
