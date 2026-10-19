@@ -15,6 +15,35 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  interface:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - name: Preparar verificação visual
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb libgl1-mesa-dri libmtdev1
+          python -m pip install 'kivy==2.3.0'
+      - name: Abrir telas em dois tamanhos de celular
+        env:
+          KIVY_NO_CONSOLELOG: '1'
+          KIVY_METRICS_DENSITY: '1'
+          KIVY_METRICS_FONTSCALE: '1'
+          LIBGL_ALWAYS_SOFTWARE: '1'
+        run: |
+          xvfb-run -a python tests/smoke_ui.py
+          ZAP_WIDTH=360 ZAP_HEIGHT=640 xvfb-run -a python tests/smoke_ui.py
+      - name: Capturas das telas reais
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: telas-do-jogo
+          path: screenshots/*.png
+          if-no-files-found: ignore
   build:
     # libffi da toolchain usa macros removidas do libtool mais recente.
     runs-on: ubuntu-22.04
@@ -30,7 +59,7 @@ jobs:
           java-version: '17'
       - name: Validar regras e conteúdo
         run: |
-          python -m compileall -q main.py game.py
+          python -m compileall -q main.py game.py ui.py
           python -m unittest discover -s tests -v
       - name: Instalar dependências Linux
         run: |

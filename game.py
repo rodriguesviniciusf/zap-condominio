@@ -27,8 +27,7 @@ class SindicoGame:
     def _sortear_evento(self):
         candidatos = [e for e in self.todos_eventos if e['dia'] == self.dia]
         if not candidatos:
-            recentes = [h.get('id') for h in self.historico[-4:]]
-            candidatos = [e for e in self.todos_eventos if e['id'] not in recentes] or self.todos_eventos
+            raise ValueError(f'Falta o evento do dia {self.dia}.')
         evento = copy.deepcopy(self.rng.choice(candidatos))
         evento['abertura'] = self.dia
         evento['ticket'] = f"{self.dia}-{evento['id']}"
@@ -122,3 +121,7 @@ class SindicoGame:
             raise ValueError('Save incompatível.')
         for nome in campos:
             setattr(self, nome, estado[nome])
+        # Um save da versão com sorteios mantém as pendências antigas, mas
+        # recebe o roteiro correto no chamado de hoje, se ainda não respondido.
+        if not self.encerrado and self.jogo_ativo:
+            self.evento_atual = self._sortear_evento()
