@@ -1,9 +1,9 @@
 """Um grupo, 365 dias e escolhas ruins: interface do Zap do Condomínio."""
 import os
 from pathlib import Path
-from kivy.animation import Animation
 from kivy.app import App
 from kivy.core.window import Window
+from kivy.graphics import Color, Rectangle
 from kivy.metrics import dp
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.boxlayout import BoxLayout
@@ -42,6 +42,10 @@ class ZapCondominioApp(App):
                 self.tem_save = False
         self.aba, self.ticket_selecionado, self.no_menu = 'chat', None, True
         self.root = AnchorLayout(anchor_x='center', anchor_y='center')
+        with self.root.canvas.before:
+            Color(*BG)
+            self.background = Rectangle(pos=self.root.pos, size=self.root.size)
+        self.root.bind(pos=self.paint_background, size=self.paint_background)
         self.shell = BoxLayout(orientation='vertical', padding=(dp(16), dp(12)),
                                spacing=dp(10), size_hint_x=None)
         self.root.add_widget(self.shell)
@@ -49,6 +53,9 @@ class ZapCondominioApp(App):
         self.shell.width = min(Window.width, dp(560))
         self.render()
         return self.root
+
+    def paint_background(self, *_):
+        self.background.pos, self.background.size = self.root.pos, self.root.size
 
     def salvar(self):
         try:
@@ -156,8 +163,6 @@ class ZapCondominioApp(App):
             item.stroke, item.height = (MINT if selected else BG), dp(44)
             nav.add_widget(item)
         self.shell.add_widget(nav)
-        self.content.opacity = 0
-        Animation(opacity=1, duration=.16).start(self.content)
 
     def section(self, eyebrow, title, subtitle=None):
         self.content.add_widget(Text(eyebrow, size=10, color=MINT, bold=True))

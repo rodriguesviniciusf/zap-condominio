@@ -12,6 +12,7 @@ Config.set('graphics', 'height', os.environ.get('ZAP_HEIGHT', '844'))
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.uix.label import Label
+from PIL import Image
 from main import ZapCondominioApp
 
 OUT = Path('screenshots')
@@ -22,11 +23,18 @@ width = os.environ.get('ZAP_WIDTH', '390')
 
 
 def check(name):
+    assert app.shell.height >= Window.height-4, (name, app.shell.size, Window.size)
+    assert app.shell.width >= Window.width-4, (name, app.shell.size, Window.size)
     for widget in app.root.walk():
         if isinstance(widget, Label) and widget.text:
             widget.texture_update()
             assert widget.height+4 >= widget.texture_size[1], (name, widget.text, widget.height, widget.texture_size)
-    app.root.export_to_png(str(OUT/f'{width}-{name}.png'))
+    path = OUT/f'{width}-{name}.png'
+    app.root.export_to_png(str(path))
+    image = Image.open(path).convert('RGB')
+    # Uma captura só com fundo ou com a primeira composição incompleta não passa.
+    assert len(image.getcolors(image.width*image.height)) > 100, name
+    print('Tela:', name, 'janela:', Window.size, 'layout:', app.shell.size, flush=True)
 
 
 def menu(_):
@@ -88,6 +96,6 @@ def finish(_):
     app.stop()
 
 
-Clock.schedule_once(menu, 1)
+Clock.schedule_once(menu, 3)
 app.run()
 print('UI verificada:', width)
