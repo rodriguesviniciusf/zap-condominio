@@ -65,8 +65,8 @@ class ExperienceMixin:
             popup.dismiss()
             self.render()
             self.ajustes()
-        for chave, nome in [('som', 'Sons'), ('vibracao', 'Vibração'), ('transicoes', 'Transições entre dias')]:
-            box.add_widget(button(nome+(' · ligados' if p[chave] else ' · desligados'), lambda k=chave: alternar(k)))
+        for chave, nome, ligado, desligado in [('som', 'Sons', 'ligados', 'desligados'), ('vibracao', 'Vibração', 'ligada', 'desligada'), ('transicoes', 'Transições entre dias', 'ligadas', 'desligadas')]:
+            box.add_widget(button(nome+' · '+(ligado if p[chave] else desligado), lambda k=chave: alternar(k)))
         box.add_widget(Text('Tamanho do texto de leitura', size=17, bold=True))
         def tamanho(valor):
             p['texto'] = valor
