@@ -13,7 +13,6 @@ Config.set('graphics', 'width', os.environ.get('ZAP_WIDTH', '390'))
 Config.set('graphics', 'height', os.environ.get('ZAP_HEIGHT', '844'))
 from kivy.clock import Clock
 from kivy.core.window import Window
-from kivy.graphics.opengl import glPixelStorei, GL_PACK_ALIGNMENT
 from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
@@ -170,10 +169,9 @@ def result(_):
 
 
 def popup(_):
-    glPixelStorei(GL_PACK_ALIGNMENT, 1)  # RGB: 390*3 não é múltiplo de quatro.
-    Window.screenshot(name=str(OUT/f'{width}-reinicio.png'))
-    old = app.game.vistos[0]
     modal = next(w for w in Window.children if isinstance(w, Popup))
+    modal.export_to_png(str(OUT/f'{width}-reinicio.png'))
+    old = app.game.vistos[0]
     label = next(w for w in modal.walk() if isinstance(w, Label) and w.text == 'Novo mandato aleatório')
     label.parent.dispatch('on_release')
     assert app.game.evento_atual['id'] != old
