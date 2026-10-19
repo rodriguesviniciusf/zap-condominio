@@ -27,10 +27,9 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y xvfb libgl1-mesa-dri libmtdev1
-          python -m pip install 'kivy==2.3.0'
+          python -m pip install 'kivy==2.3.0' 'Pillow==11.3.0'
       - name: Abrir telas em dois tamanhos de celular
         env:
-          KIVY_NO_CONSOLELOG: '1'
           KIVY_METRICS_DENSITY: '1'
           KIVY_METRICS_FONTSCALE: '1'
           LIBGL_ALWAYS_SOFTWARE: '1'
