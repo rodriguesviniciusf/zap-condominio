@@ -8,25 +8,25 @@
     "conselheiro_pitaco": "Seu Valdir (Conselho): Vamos organizar um coral no corredor para competir.",
     "opcoes": [
       {
-        "texto": "Passiva: conversar e organizar a solução.",
+        "texto": "Passiva: Pedir que desliguem o karaokê e registrar o horário.",
         "paciencia_sindico": -1,
         "caixa_condominio": -60,
         "aprovacao": 3,
-        "resposta_morador": "Combinado registrado. Por cinco minutos o grupo ficou em paz."
+        "resposta_morador": "Desligamos. Mas a Dona Cida pediu bis no privado."
       },
       {
-        "texto": "Debochada: mandar uma resposta atravessada.",
+        "texto": "Debochada: Mandar: o Grammy de desafinação já tem vencedor.",
         "paciencia_sindico": 4,
         "caixa_condominio": 0,
         "aprovacao": -6,
-        "resposta_morador": "Print tirado. Já criaram o grupo Sem o Síndico."
+        "resposta_morador": "Agora o 402 quer duelo de sertanejo na assembleia."
       },
       {
-        "texto": "Multa: registrar a infração e cobrar R$ 150.",
+        "texto": "Multa: Multar o 402 pelo barulho registrado.",
         "paciencia_sindico": -2,
         "caixa_condominio": 150,
         "aprovacao": -4,
-        "resposta_morador": "Multa recebida. O recurso veio com 18 áudios."
+        "resposta_morador": "O cantor pagou e dedicou uma música ao síndico."
       },
       {
         "texto": "Conselho: ouvir Seu Valdir.",
@@ -52,25 +52,25 @@
     "conselheiro_pitaco": "Dona Marlene (Conselho): Vamos eleger o cachorro fiscal da coleta.",
     "opcoes": [
       {
-        "texto": "Passiva: conversar e organizar a solução.",
+        "texto": "Passiva: Conversar com o tutor e organizar a limpeza.",
         "paciencia_sindico": -1,
         "caixa_condominio": -60,
         "aprovacao": 3,
-        "resposta_morador": "Combinado registrado. Por cinco minutos o grupo ficou em paz."
+        "resposta_morador": "Limpeza combinada e cachorro longe das sacolas."
       },
       {
-        "texto": "Debochada: mandar uma resposta atravessada.",
+        "texto": "Debochada: Mandar: o cachorro trabalha mais que a comissão de lixo.",
         "paciencia_sindico": 4,
         "caixa_condominio": 0,
         "aprovacao": -6,
-        "resposta_morador": "Print tirado. Já criaram o grupo Sem o Síndico."
+        "resposta_morador": "O tutor mandou um áudio latindo em protesto."
       },
       {
-        "texto": "Multa: registrar a infração e cobrar R$ 150.",
+        "texto": "Multa: Multar o tutor pela sujeira no corredor.",
         "paciencia_sindico": -2,
         "caixa_condominio": 150,
         "aprovacao": -4,
-        "resposta_morador": "Multa recebida. O recurso veio com 18 áudios."
+        "resposta_morador": "Multa paga. O cachorro segue inadimplente de boas maneiras."
       },
       {
         "texto": "Conselho: ouvir Dona Marlene.",
@@ -96,25 +96,25 @@
     "conselheiro_pitaco": "Toninho (Conselho): Põe uma bicicleta de papelão como isca e cobra ingresso.",
     "opcoes": [
       {
-        "texto": "Passiva: conversar e organizar a solução.",
+        "texto": "Passiva: Registrar o furto e reforçar o controle da garagem.",
         "paciencia_sindico": -1,
         "caixa_condominio": -60,
         "aprovacao": 3,
-        "resposta_morador": "Combinado registrado. Por cinco minutos o grupo ficou em paz."
+        "resposta_morador": "Vamos registrar a ocorrência e organizar os acessos."
       },
       {
-        "texto": "Debochada: mandar uma resposta atravessada.",
+        "texto": "Debochada: Mandar: a câmera adesiva estava em modo econômico.",
         "paciencia_sindico": 4,
         "caixa_condominio": 0,
         "aprovacao": -6,
-        "resposta_morador": "Print tirado. Já criaram o grupo Sem o Síndico."
+        "resposta_morador": "A foto do adesivo virou figurinha no grupo."
       },
       {
-        "texto": "Multa: registrar a infração e cobrar R$ 150.",
+        "texto": "Multa: Multar quem deixou o portão aberto após apuração.",
         "paciencia_sindico": -2,
         "caixa_condominio": 150,
         "aprovacao": -4,
-        "resposta_morador": "Multa recebida. O recurso veio com 18 áudios."
+        "resposta_morador": "O responsável pagou e pediu câmera que filme de verdade."
       },
       {
         "texto": "Conselho: ouvir Toninho.",
@@ -140,25 +140,25 @@
     "conselheiro_pitaco": "Seu Valdir (Conselho): Deixa uma vassoura de boné na guarita.",
     "opcoes": [
       {
-        "texto": "Passiva: conversar e organizar a solução.",
+        "texto": "Passiva: Conferir acessos e orientar os moradores.",
         "paciencia_sindico": -1,
         "caixa_condominio": -60,
         "aprovacao": 3,
-        "resposta_morador": "Combinado registrado. Por cinco minutos o grupo ficou em paz."
+        "resposta_morador": "Lista de acesso organizada. Agora perguntam até o signo."
       },
       {
-        "texto": "Debochada: mandar uma resposta atravessada.",
+        "texto": "Debochada: Mandar: o primo do porteiro imaginário atacou de novo.",
         "paciencia_sindico": 4,
         "caixa_condominio": 0,
         "aprovacao": -6,
-        "resposta_morador": "Print tirado. Já criaram o grupo Sem o Síndico."
+        "resposta_morador": "O falso primo foi promovido a meme do prédio."
       },
       {
-        "texto": "Multa: registrar a infração e cobrar R$ 150.",
+        "texto": "Multa: Multar quem liberou o acesso sem identificação.",
         "paciencia_sindico": -2,
         "caixa_condominio": 150,
         "aprovacao": -4,
-        "resposta_morador": "Multa recebida. O recurso veio com 18 áudios."
+        "resposta_morador": "O morador pagou e saiu do grupo por dez minutos."
       },
       {
         "texto": "Conselho: ouvir Seu Valdir.",
@@ -184,25 +184,25 @@
     "conselheiro_pitaco": "Dona Marlene (Conselho): Declara o elevador imóvel de temporada e anuncia por diária.",
     "opcoes": [
       {
-        "texto": "Passiva: conversar e organizar a solução.",
+        "texto": "Passiva: Chamar manutenção e comunicar a interdição.",
         "paciencia_sindico": -1,
         "caixa_condominio": -60,
         "aprovacao": 3,
-        "resposta_morador": "Combinado registrado. Por cinco minutos o grupo ficou em paz."
+        "resposta_morador": "Equipe acionada. A feira chegou por escada."
       },
       {
-        "texto": "Debochada: mandar uma resposta atravessada.",
+        "texto": "Debochada: Mandar: o elevador aderiu ao trabalho remoto.",
         "paciencia_sindico": 4,
         "caixa_condominio": 0,
         "aprovacao": -6,
-        "resposta_morador": "Print tirado. Já criaram o grupo Sem o Síndico."
+        "resposta_morador": "Chamaram o síndico de técnico em piada ruim."
       },
       {
-        "texto": "Multa: registrar a infração e cobrar R$ 150.",
+        "texto": "Multa: Multar quem excedeu a lotação registrada.",
         "paciencia_sindico": -2,
         "caixa_condominio": 150,
         "aprovacao": -4,
-        "resposta_morador": "Multa recebida. O recurso veio com 18 áudios."
+        "resposta_morador": "O responsável pagou. A melancia continua retida."
       },
       {
         "texto": "Conselho: ouvir Dona Marlene.",
@@ -228,25 +228,25 @@
     "conselheiro_pitaco": "Toninho (Conselho): Faz um campeonato: quem comer mais farofa ganha a reserva.",
     "opcoes": [
       {
-        "texto": "Passiva: conversar e organizar a solução.",
+        "texto": "Passiva: Reorganizar as reservas com uma regra por unidade.",
         "paciencia_sindico": -1,
         "caixa_condominio": -60,
         "aprovacao": 3,
-        "resposta_morador": "Combinado registrado. Por cinco minutos o grupo ficou em paz."
+        "resposta_morador": "Calendário corrigido. O gato perdeu cinco domingos."
       },
       {
-        "texto": "Debochada: mandar uma resposta atravessada.",
+        "texto": "Debochada: Mandar: o gato trouxe comprovante de residência?",
         "paciencia_sindico": 4,
         "caixa_condominio": 0,
         "aprovacao": -6,
-        "resposta_morador": "Print tirado. Já criaram o grupo Sem o Síndico."
+        "resposta_morador": "O dono mandou foto do gato com cara de advogado."
       },
       {
-        "texto": "Multa: registrar a infração e cobrar R$ 150.",
+        "texto": "Multa: Multar o uso indevido das reservas.",
         "paciencia_sindico": -2,
         "caixa_condominio": 150,
         "aprovacao": -4,
-        "resposta_morador": "Multa recebida. O recurso veio com 18 áudios."
+        "resposta_morador": "A multa saiu no nome do morador. O gato recorreu por miado."
       },
       {
         "texto": "Conselho: ouvir Toninho.",
@@ -272,25 +272,25 @@
     "conselheiro_pitaco": "Seu Valdir (Conselho): Vende ingresso para o Pantanal do bloco B.",
     "opcoes": [
       {
-        "texto": "Passiva: conversar e organizar a solução.",
+        "texto": "Passiva: Contratar tratamento e fechar a piscina por enquanto.",
         "paciencia_sindico": -1,
         "caixa_condominio": -60,
         "aprovacao": 3,
-        "resposta_morador": "Combinado registrado. Por cinco minutos o grupo ficou em paz."
+        "resposta_morador": "Tratamento iniciado. O spa de clorofila foi cancelado."
       },
       {
-        "texto": "Debochada: mandar uma resposta atravessada.",
+        "texto": "Debochada: Mandar: o jacaré ainda está em fase de cadastro.",
         "paciencia_sindico": 4,
         "caixa_condominio": 0,
         "aprovacao": -6,
-        "resposta_morador": "Print tirado. Já criaram o grupo Sem o Síndico."
+        "resposta_morador": "Tem morador perguntando se pode alimentar o jacaré."
       },
       {
-        "texto": "Multa: registrar a infração e cobrar R$ 150.",
+        "texto": "Multa: Multar o descarte irregular apurado na piscina.",
         "paciencia_sindico": -2,
         "caixa_condominio": 150,
         "aprovacao": -4,
-        "resposta_morador": "Multa recebida. O recurso veio com 18 áudios."
+        "resposta_morador": "Multa paga. Banho verde deixou de ser tendência."
       },
       {
         "texto": "Conselho: ouvir Seu Valdir.",
@@ -316,25 +316,25 @@
     "conselheiro_pitaco": "Dona Marlene (Conselho): Desenha as vagas por cima do carro com giz.",
     "opcoes": [
       {
-        "texto": "Passiva: conversar e organizar a solução.",
+        "texto": "Passiva: Mediar a vaga e orientar a retirada do carro.",
         "paciencia_sindico": -1,
         "caixa_condominio": -60,
         "aprovacao": 3,
-        "resposta_morador": "Combinado registrado. Por cinco minutos o grupo ficou em paz."
+        "resposta_morador": "Carro reposicionado. O casamento ainda está em análise."
       },
       {
-        "texto": "Debochada: mandar uma resposta atravessada.",
+        "texto": "Debochada: Mandar: esse SUV paga dois condomínios?",
         "paciencia_sindico": 4,
         "caixa_condominio": 0,
         "aprovacao": -6,
-        "resposta_morador": "Print tirado. Já criaram o grupo Sem o Síndico."
+        "resposta_morador": "O dono disse que a ironia também ocupa duas vagas."
       },
       {
-        "texto": "Multa: registrar a infração e cobrar R$ 150.",
+        "texto": "Multa: Multar a ocupação irregular das vagas.",
         "paciencia_sindico": -2,
         "caixa_condominio": 150,
         "aprovacao": -4,
-        "resposta_morador": "Multa recebida. O recurso veio com 18 áudios."
+        "resposta_morador": "Multa paga. Ele estacionou entre as linhas pela primeira vez."
       },
       {
         "texto": "Conselho: ouvir Dona Marlene.",
@@ -360,25 +360,25 @@
     "conselheiro_pitaco": "Toninho (Conselho): Só vota quem mandar um áudio cantando o regimento.",
     "opcoes": [
       {
-        "texto": "Passiva: conversar e organizar a solução.",
+        "texto": "Passiva: Publicar pauta curta e organizar uma votação.",
         "paciencia_sindico": -1,
         "caixa_condominio": -60,
         "aprovacao": 3,
-        "resposta_morador": "Combinado registrado. Por cinco minutos o grupo ficou em paz."
+        "resposta_morador": "Pauta publicada e votação concluída sem podcast."
       },
       {
-        "texto": "Debochada: mandar uma resposta atravessada.",
+        "texto": "Debochada: Mandar: áudio de três minutos conta como procuração?",
         "paciencia_sindico": 4,
         "caixa_condominio": 0,
         "aprovacao": -6,
-        "resposta_morador": "Print tirado. Já criaram o grupo Sem o Síndico."
+        "resposta_morador": "Responderam com mais 19 áudios, todos começando por só um detalhe."
       },
       {
-        "texto": "Multa: registrar a infração e cobrar R$ 150.",
+        "texto": "Multa: Multar a infração de convivência registrada na reunião.",
         "paciencia_sindico": -2,
         "caixa_condominio": 150,
         "aprovacao": -4,
-        "resposta_morador": "Multa recebida. O recurso veio com 18 áudios."
+        "resposta_morador": "A multa foi paga em silêncio. Um fenômeno raro."
       },
       {
         "texto": "Conselho: ouvir Toninho.",
@@ -404,25 +404,25 @@
     "conselheiro_pitaco": "Seu Valdir (Conselho): Cria a taxa de degustação obrigatória das encomendas.",
     "opcoes": [
       {
-        "texto": "Passiva: conversar e organizar a solução.",
+        "texto": "Passiva: Registrar a entrega e cobrar a devolução correta.",
         "paciencia_sindico": -1,
         "caixa_condominio": -60,
         "aprovacao": 3,
-        "resposta_morador": "Combinado registrado. Por cinco minutos o grupo ficou em paz."
+        "resposta_morador": "Air fryer devolvida e protocolo de entregas combinado."
       },
       {
-        "texto": "Debochada: mandar uma resposta atravessada.",
+        "texto": "Debochada: Mandar: a garantia cobre cheiro de coxinha?",
         "paciencia_sindico": 4,
         "caixa_condominio": 0,
         "aprovacao": -6,
-        "resposta_morador": "Print tirado. Já criaram o grupo Sem o Síndico."
+        "resposta_morador": "O 202 ofereceu duas coxinhas como acordo de paz."
       },
       {
-        "texto": "Multa: registrar a infração e cobrar R$ 150.",
+        "texto": "Multa: Multar a retenção indevida da encomenda.",
         "paciencia_sindico": -2,
         "caixa_condominio": 150,
         "aprovacao": -4,
-        "resposta_morador": "Multa recebida. O recurso veio com 18 áudios."
+        "resposta_morador": "Multa paga. Agora ele só testa o próprio eletrodoméstico."
       },
       {
         "texto": "Conselho: ouvir Seu Valdir.",
@@ -448,25 +448,25 @@
     "conselheiro_pitaco": "Dona Marlene (Conselho): Batiza de fonte e faz inauguração com fita.",
     "opcoes": [
       {
-        "texto": "Passiva: conversar e organizar a solução.",
+        "texto": "Passiva: Contratar reparo e isolar a área molhada.",
         "paciencia_sindico": -1,
         "caixa_condominio": -60,
         "aprovacao": 3,
-        "resposta_morador": "Combinado registrado. Por cinco minutos o grupo ficou em paz."
+        "resposta_morador": "Reparo agendado. O balde tirou folga remunerada."
       },
       {
-        "texto": "Debochada: mandar uma resposta atravessada.",
+        "texto": "Debochada: Mandar: o balde será candidato na próxima eleição.",
         "paciencia_sindico": 4,
         "caixa_condominio": 0,
         "aprovacao": -6,
-        "resposta_morador": "Print tirado. Já criaram o grupo Sem o Síndico."
+        "resposta_morador": "Criaram a chapa Balde 2027 em quatro minutos."
       },
       {
-        "texto": "Multa: registrar a infração e cobrar R$ 150.",
+        "texto": "Multa: Multar a obra irregular que causou a goteira.",
         "paciencia_sindico": -2,
         "caixa_condominio": 150,
         "aprovacao": -4,
-        "resposta_morador": "Multa recebida. O recurso veio com 18 áudios."
+        "resposta_morador": "Responsável notificado e multa paga. O teto virou assunto sério."
       },
       {
         "texto": "Conselho: ouvir Dona Marlene.",
@@ -492,25 +492,25 @@
     "conselheiro_pitaco": "Toninho (Conselho): Transforma o salão em reality show e vende voto por pix.",
     "opcoes": [
       {
-        "texto": "Passiva: conversar e organizar a solução.",
+        "texto": "Passiva: Revisar a reserva e limitar o uso conforme o regimento.",
         "paciencia_sindico": -1,
         "caixa_condominio": -60,
         "aprovacao": 3,
-        "resposta_morador": "Combinado registrado. Por cinco minutos o grupo ficou em paz."
+        "resposta_morador": "Reserva corrigida. A sogra exigiu ata e cafezinho."
       },
       {
-        "texto": "Debochada: mandar uma resposta atravessada.",
+        "texto": "Debochada: Mandar: a sogra já pediu cadeira no conselho?",
         "paciencia_sindico": 4,
         "caixa_condominio": 0,
         "aprovacao": -6,
-        "resposta_morador": "Print tirado. Já criaram o grupo Sem o Síndico."
+        "resposta_morador": "A sogra respondeu com um discurso de posse."
       },
       {
-        "texto": "Multa: registrar a infração e cobrar R$ 150.",
+        "texto": "Multa: Multar o uso irregular do salão.",
         "paciencia_sindico": -2,
         "caixa_condominio": 150,
         "aprovacao": -4,
-        "resposta_morador": "Multa recebida. O recurso veio com 18 áudios."
+        "resposta_morador": "Multa paga. O salão voltou a ser área comum."
       },
       {
         "texto": "Conselho: ouvir Toninho.",

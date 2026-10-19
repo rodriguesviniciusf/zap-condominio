@@ -7,6 +7,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.scrollview import ScrollView
+from kivy.uix.progressbar import ProgressBar
 from game import SindicoGame
 
 Window.clearcolor = (0.055, 0.09, 0.10, 1)
@@ -28,6 +29,8 @@ class ZapCondominioApp(App):
         self.root = BoxLayout(orientation='vertical', padding=dp(12), spacing=dp(8))
         self.status = Label(size_hint_y=None, height=dp(92), font_size='14sp')
         self.root.add_widget(self.status)
+        self.paciencia_barra = ProgressBar(max=100, size_hint_y=None, height=dp(12))
+        self.root.add_widget(self.paciencia_barra)
         barra = BoxLayout(size_hint_y=None, height=dp(44), spacing=dp(6))
         for titulo, aba in [('Chat', 'chat'), ('Chamados', 'pendencias'), ('Gestão', 'gestao')]:
             botao = Button(text=titulo)
@@ -60,6 +63,7 @@ class ZapCondominioApp(App):
 
     def atualizar_interface(self):
         g = self.game
+        self.paciencia_barra.value = g.paciencia
         self.status.text = f'ZAP DA GESTÃO | Dia {g.dia}/365\nCaixa: R$ {g.caixa:,.0f}\nPaciência: {g.paciencia}% | Aprovação: {g.aprovacao}%\nChamados: {len(g.pendencias)} | Crises futuras: {len(g.consequencias)}'
         self.conteudo.clear_widgets()
         self.texto(self.aviso, (0.55, 0.9, 0.75, 1))
@@ -102,8 +106,10 @@ class ZapCondominioApp(App):
         self.atualizar_interface()
 
     def avancar(self):
+        antes = len(self.game.historico)
         self.game.avancar_dia()
-        self.aviso = 'Novo dia, novas notificações. Veja o histórico na Gestão.'
+        novidades = self.game.historico[antes:]
+        self.aviso = '\n'.join(item['texto'] for item in novidades) or 'Novo dia, novas notificações.'
         self.atualizar_interface()
 
     def comprar(self):
