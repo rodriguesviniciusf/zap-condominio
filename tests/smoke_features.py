@@ -13,6 +13,7 @@ Config.set('graphics', 'width', os.environ.get('ZAP_WIDTH', '390'))
 Config.set('graphics', 'height', os.environ.get('ZAP_HEIGHT', '844'))
 from kivy.clock import Clock
 from kivy.core.window import Window
+from kivy.graphics.opengl import glPixelStorei, GL_PACK_ALIGNMENT
 from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 from main import ZapCondominioApp
@@ -36,6 +37,7 @@ def check(nome):
             if isinstance(widget, Label) and widget.text:
                 widget.texture_update()
                 assert widget.height+4 >= widget.texture_size[1], (nome, widget.text, widget.height, widget.texture_size)
+    glPixelStorei(GL_PACK_ALIGNMENT, 1)  # RGB: 390*3 não é múltiplo de quatro.
     Window.screenshot(name=str(Path('screenshots')/f'{width}-novo-{nome}.png'))
     print('Nova tela:', nome, flush=True)
 
