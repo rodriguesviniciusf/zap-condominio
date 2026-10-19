@@ -26,7 +26,7 @@ app = ZapCondominioApp()
 
 
 def check(name):
-    assert app.shell.height >= Window.height-4
+    assert app.shell.height >= Window.height-4, (app.shell.height, Window.height)
     assert app.shell.width >= Window.width-4
     for widget in app.root.walk():
         if isinstance(widget, Label) and widget.text:
@@ -184,6 +184,6 @@ def finish(_):
     app.stop()
 
 
-Clock.schedule_once(menu, 3)
+app.bind(on_start=lambda *_: Clock.schedule_once(menu, 1))
 app.run()
 print('UI e novas mecânicas verificadas:', width)
