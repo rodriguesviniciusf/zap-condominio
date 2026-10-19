@@ -14,6 +14,7 @@ Config.set('graphics', 'height', os.environ.get('ZAP_HEIGHT', '844'))
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.uix.label import Label
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from PIL import Image
 from main import ZapCondominioApp
@@ -31,6 +32,12 @@ def check(name):
         if isinstance(widget, Label) and widget.text:
             widget.texture_update()
             assert widget.height+4 >= widget.texture_size[1], (name, widget.text, widget.height, widget.texture_size)
+        if isinstance(widget, BoxLayout) and widget.orientation == 'vertical':
+            children = sorted(widget.children, key=lambda child: child.y)
+            for child in children:
+                assert child.height > 0, (name, 'altura vazia', type(child).__name__)
+            for lower, upper in zip(children, children[1:]):
+                assert lower.top <= upper.y+2, (name, 'sobreposição', type(lower).__name__, type(upper).__name__)
     path = OUT/f'{width}-{name}.png'
     app.root.export_to_png(str(path))
     img = Image.open(path).convert('RGB')

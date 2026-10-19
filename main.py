@@ -188,8 +188,9 @@ class ZapCondominioApp(App):
 
     def render_chat(self):
         g = self.game
-        self.content.add_widget(Cover(size_hint_y=None, height=dp(118)))
-        self.content.add_widget(Text(f'VILA DO SOSSEGO  /  {len(g.pendencias)} PAUTA(S) ABERTA(S)', size=10, color=MUTED, bold=True))
+        if not g.assembleia and g.evento_foco.get('tipo_evento') != 'crise':
+            self.content.add_widget(Cover(size_hint_y=None, height=dp(84)))
+            self.content.add_widget(Text(f'VILA DO SOSSEGO  /  {len(g.pendencias)} PAUTA(S) ABERTA(S)', size=10, color=MUTED, bold=True))
         self.notice()
         if g.assembleia:
             self.assembly_card()

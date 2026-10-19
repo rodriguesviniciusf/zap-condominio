@@ -46,6 +46,8 @@ class Card(BoxLayout):
         kwargs.setdefault('spacing', dp(8))
         if adaptive:
             kwargs.setdefault('size_hint_y', None)
+        elif 'height' in kwargs:
+            kwargs.setdefault('size_hint_y', None)
         super().__init__(**kwargs)
         self.radius = dp(radius)
         with self.canvas.before:

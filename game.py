@@ -141,7 +141,10 @@ class SindicoGame:
             if nome == afetado:
                 estado['confianca'] += ganho
                 estado['irritacao'] += irritacao
-                estado['ultima'] = f"Dia {self.dia}: {tipo} no chamado {evento.get('titulo', 'do grupo')}."
+                estilo = {'passiva': 'conversa', 'debochada': 'resposta debochada', 'multa': 'multa',
+                          'conselho': 'plano do conselho', 'melhoria': 'solução profissional',
+                          'delegacao': 'ajuda da equipe'}.get(tipo, tipo)
+                estado['ultima'] = f"Dia {self.dia}: {estilo} no chamado {evento.get('titulo', 'do grupo')}."
             elif PERFIS[nome]['interesse'] == evento['categoria']:
                 estado['confianca'] += 2 if ganho > 0 else -2
         self.verificar_status_jogo()
